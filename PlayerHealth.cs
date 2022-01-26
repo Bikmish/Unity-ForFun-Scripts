@@ -27,9 +27,15 @@ public class PlayerHealth : MonoBehaviour
             InterfaceColor = new Color32(255, 23, 0, 255);
 
         HealthInterface.color = InterfaceColor;
+        if (Health <= 0)
+            gameOver();
     }
     public void TakeDamage(int dmg)
     {
         Health -= dmg;
+    }
+    private static void gameOver()
+    {
+        print("Whooopsie! It's game over");
     }
 }
