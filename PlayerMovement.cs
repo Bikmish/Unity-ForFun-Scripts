@@ -35,8 +35,7 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -5f;
             if(Input.GetButtonDown("Jump"))
             {
-                velocity.y = Mathf.Sqrt(2f * gravity * jumpHeight);
-                controller.Move(velocity * Time.deltaTime + Vector3.down * gravity * Time.deltaTime * Time.deltaTime * 0.5f); //s = v*t + 0.5*g*t^2
+                Jump(jumpHeight);
             }
         }
         else 
@@ -48,5 +47,10 @@ public class PlayerMovement : MonoBehaviour
         
         controller.Move(move * speed * Time.deltaTime);
        
+    }
+    public void Jump(float jumpForce)
+    {
+        velocity.y = Mathf.Sqrt(2f * gravity * jumpForce);
+        controller.Move(velocity * Time.deltaTime + Vector3.down * gravity * Time.deltaTime * Time.deltaTime * 0.5f); //s = v*t + 0.5*g*t^2
     }
 }
