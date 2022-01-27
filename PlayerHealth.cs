@@ -8,11 +8,12 @@ public class PlayerHealth : MonoBehaviour
     public int Health = 100;
     public TextMeshProUGUI HealthInterface;
     Color InterfaceColor;
+    public Camera gameOverCamera;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameOverCamera.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -29,13 +30,22 @@ public class PlayerHealth : MonoBehaviour
         HealthInterface.color = InterfaceColor;
         if (Health <= 0)
             gameOver();
+        if (Health > 200)
+            Health = 200;
     }
     public void TakeDamage(int dmg)
     {
         Health -= dmg;
     }
-    private static void gameOver()
+    public int health
+    {
+        get { return Health; }
+        set { Health = value; }
+    }
+    private void gameOver()
     {
         print("Whooopsie! It's game over");
+        gameOverCamera.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
