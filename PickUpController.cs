@@ -51,6 +51,7 @@ public class PickUpController : MonoBehaviour
     private void Drop()
     {
         equipped = slotFull = false;
+        gameObject.GetComponent<Animation>().Stop();
         rb.isKinematic = coll.isTrigger = gunScript.enabled = false;
         transform.SetParent(null);
         rb.velocity = player.GetComponent<Rigidbody>().velocity;
