@@ -32,6 +32,13 @@ public class ProjectileShooting : MonoBehaviour
     public GameObject muzzleFlash;
     public TextMeshProUGUI ammunitionDisplay;
 
+    //shot sound
+    public AudioSource shotSound;
+
+    //animations of shooting, reloading etc.
+    public Animation[] shootingAnimations;
+    public Animation[] reloadingAnimations;
+
     private void Awake()
     {
         bulletsLeft = magazineSize;
@@ -69,6 +76,13 @@ public class ProjectileShooting : MonoBehaviour
     private void Shoot()
     {
         readyToShoot = false;
+
+        //shot sound
+        shotSound.Play();
+
+        //shooting animation
+        foreach (Animation anim in shootingAnimations)
+            anim.Play();
 
         //calculating hit point
         Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
