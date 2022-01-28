@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CanonBallBoom : MonoBehaviour
 {
-    public float Timer = 3f, explosionRadius = 3f, EnemyDistance = 1.5f;
+    public float Timer = 3f, explosionRadius = 3f, EnemyDistance = 1.5f, explosionForce = 10f;
     public int explosionDamage = 35;
     public GameObject BoomEffect;
     public LayerMask EnemyMask, PlayerMask, ProjectileMask;
@@ -46,6 +46,7 @@ public class CanonBallBoom : MonoBehaviour
     {
         Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRadius, EnemyMask);
         Collider[] players = Physics.OverlapSphere(transform.position, explosionRadius, PlayerMask);
+        Collider[] objs = Physics.OverlapSphere(transform.position, explosionRadius, Physics.AllLayers);
         for (int i = 0; i<enemies.Length; ++i)
         {
             EnemyAI curEnemy = enemies[i].GetComponent<EnemyAI>();
@@ -63,5 +64,8 @@ public class CanonBallBoom : MonoBehaviour
                 else
                     print("Ooops! There is no PlayerHealth script!");
             }
+        for (int k = 0; k < objs.Length; ++k)
+            if (objs[k].GetComponent<Rigidbody>())
+                objs[k].GetComponent<Rigidbody>().AddExplosionForce(explosionForce, transform.position, explosionRadius);
     }
 }
