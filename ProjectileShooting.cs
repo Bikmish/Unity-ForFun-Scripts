@@ -37,6 +37,7 @@ public class ProjectileShooting : MonoBehaviour
 
     //animations of shooting, reloading etc.
     public Animation[] shootingAnimations;
+    public string[] ShootAnimName;
     public Animation[] reloadingAnimations;
 
     private void Awake()
@@ -80,9 +81,11 @@ public class ProjectileShooting : MonoBehaviour
         //shot sound
         shotSound.Play();
 
+        gameObject.GetComponent<Animation>().Stop(); //stop bobbing
+
         //shooting animation
-        foreach (Animation anim in shootingAnimations)
-            anim.Play();
+        for(int i = 0; i<shootingAnimations.Length; ++i)
+            shootingAnimations[i].Play(ShootAnimName[i]);
 
         //calculating hit point
         Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
