@@ -22,10 +22,19 @@ public class EnemyAI : MonoBehaviour
     public float timeBetweenAttacks;
     bool alreadyAttacked;
     public GameObject projectile;
+    public float attackForce = 32f;
+    public float upwardAttackForce = 8f;
+    public Transform attackPoint;
 
     //states
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
+
+    //animations
+    public Animation[] walkAnimations;
+    public string[] walkAnimName;
+    public Animation[] attackAnimations;
+    public string[] attackAnimName;
 
     private void Awake()
     {
@@ -41,11 +50,20 @@ public class EnemyAI : MonoBehaviour
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerMask);
 
         if (!playerInSightRange && !playerInAttackRange && !gotDestroyed)
+        {
             Patrolling();
+            walkAnim();
+        }
         else if (playerInSightRange && !playerInAttackRange && !gotDestroyed)
+        {
             ChasePlayer();
+            walkAnim();
+        }
         else if (playerInAttackRange && !gotDestroyed)
+        {
             AttackPlayer();
+            attackAnim();
+        }
     }
     private void Patrolling()
     {
@@ -79,9 +97,9 @@ public class EnemyAI : MonoBehaviour
         if(!alreadyAttacked)
         {
             alreadyAttacked = true;
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+            Rigidbody rb = Instantiate(projectile, attackPoint.position, Quaternion.identity).GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * attackForce, ForceMode.Impulse);
+            rb.AddForce(transform.up * upwardAttackForce, ForceMode.Impulse);
             
             Invoke("ResetAttack", timeBetweenAttacks);
         }
@@ -120,5 +138,15 @@ public class EnemyAI : MonoBehaviour
             debri.GetComponent<Rigidbody>().AddForce(Vector3.up * debrisSpeed, ForceMode.Impulse);
         }
 
+    }
+    private void walkAnim()
+    {
+        for (int i = 0; i <walkAnimations.Length; ++i)
+            walkAnimations[i].Play(walkAnimName[i]);
+    }
+    private void attackAnim()
+    {
+        for (int i = 0; i < attackAnimations.Length; ++i)
+            attackAnimations[i].Play(attackAnimName[i]);
     }
 }
