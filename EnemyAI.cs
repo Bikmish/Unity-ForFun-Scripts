@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour
     public int EnemyHealth = 100;
     public GameObject[] debris;
     public float debrisSpeed = 100f;
+    public int points = 100;
     bool gotDestroyed = false;
 
     //patrolling
@@ -116,6 +117,7 @@ public class EnemyAI : MonoBehaviour
     {
         gotDestroyed = true;
         spawnDebris();
+        player.GetComponent<PlayerScore>().plusCombo(points);
         Destroy(gameObject);
     }
     private void spawnDebris()
